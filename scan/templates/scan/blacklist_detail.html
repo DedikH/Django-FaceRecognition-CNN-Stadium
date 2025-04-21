@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail Pelanggar - Blacklist</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fdfdfd;
+            padding: 20px;
+        }
+        .card {
+            width: 500px;
+            background-color: #fff3f3;
+            border: 2px solid #ff4d4d;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(255, 0, 0, 0.2);
+            padding: 20px;
+            margin: auto;
+            text-align: center;
+        }
+        .card img {
+            width: 200px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .card h2 {
+            color: #cc0000;
+        }
+        .card p {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+        .badge {
+            padding: 5px 10px;
+            background-color: red;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2><span class="badge">BLACKLIST</span></h2>
+    {% if foto_base64 %}
+        <img src="data:image/jpeg;base64,{{ foto_base64 }}" alt="Foto Pelanggar">
+    {% else %}
+    <h3>{{ nama }}</h3>
+    <p><strong>Umur:</strong> {{ umur }}</p>
+    <p><strong>Kasus:</strong> {{ kasus }}</p>
+    <p><strong>Tim Pendukung:</strong> {{ tim }}</p>
+</div>
+
+</body>
+</html>
