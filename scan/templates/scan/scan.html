@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Safe League</title>
+</head>
+<body>
+    <h1>Safe League</h1>
+    <h2>Scan</h2>
+
+    <div>
+        <img src="{% url 'camera_feed' %}" width="640" height="480">
+    </div>
+
+    <h3>Status</h3>
+    <div style="width:100px;height:50px;background-color:lime;" id="statusBox"></div>
+
+    <button onclick="alert('Detail pengguna akan muncul di sini.')">Detail</button>
+</body>
+</html>

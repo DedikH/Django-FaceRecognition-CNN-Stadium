@@ -1,0 +1,6 @@
+__pycache__/
+*.h5
+*.pyc
+.env
+.DS_Store
+*.sqlite3
