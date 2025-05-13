@@ -1,0 +1,6 @@
+<h2>Yakin ingin menghapus {{ data.nama }}?</h2>
+<form method="POST">
+  {% csrf_token %}
+  <button type="submit">Ya, hapus</button>
+</form>
+<a href="{% url 'pelaku_list' %}">Batal</a>

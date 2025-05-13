@@ -1,0 +1,16 @@
+<h1>Daftar Pelaku</h1>
+<a href="{% url 'pelaku_create' %}">Tambah Pelaku</a>
+<ul>
+  {% for p in data %}
+    <li>
+      <strong>{{ p.nama }}</strong> - {{ p.kasus }}
+      <br>
+      {% if p.foto_pelaku %}
+        <img src="{{ pelaku.foto_pelaku.url }}" width="120">
+      {% endif %}
+      <br>
+      <a href="{% url 'pelaku_update' p.pk %}">Edit</a> |
+      <a href="{% url 'pelaku_delete' p.pk %}">Hapus</a>
+    </li>
+  {% endfor %}
+</ul>

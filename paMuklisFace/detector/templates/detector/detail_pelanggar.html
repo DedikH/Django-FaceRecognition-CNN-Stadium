@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detail Pelanggar</title>
+</head>
+<body>
+    <h1>Detail Pelanggar: {{ pelaku.nama }}</h1>
+    <p>Umur: {{ pelaku.umur }}</p>
+    <p>Kasus: {{ pelaku.kasus }}</p>
+    <p>Tim Pendukung: {{ pelaku.tim_dukung }}</p>
+    
+    {% if pelaku.foto_pelaku %}
+        <img src="{{ pelaku.foto_pelaku.url }}" alt="Foto Pelaku" />
+    {% else %}
+        <p>Tidak ada foto pelaku.</p>
+    {% endif %}
+</body>
+</html>
