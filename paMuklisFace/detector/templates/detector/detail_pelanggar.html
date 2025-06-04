@@ -1,18 +1,97 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Detail Pelanggar</title>
+  <meta charset="UTF-8">
+  <title>Detail Pelanggar</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .form-control[readonly] {
+      background-color: #f5f3ed;
+      font-weight: bold;
+      border: none;
+    }
+    .back-btn {
+      font-size: 1.5rem;
+      text-decoration: none;
+      color: black;
+      margin-right: 10px;
+    }
+    .icon-info {
+      width: 24px;
+      height: 24px;
+    }
+    .foto-pelaku {
+      max-width: 100%;
+      max-height: 300px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+  </style>
 </head>
-<body>
-    <h1>Detail Pelanggar: {{ pelaku.nama }}</h1>
-    <p>Umur: {{ pelaku.umur }}</p>
-    <p>Kasus: {{ pelaku.kasus }}</p>
-    <p>Tim Pendukung: {{ pelaku.tim_dukung }}</p>
-    
-    {% if pelaku.foto_pelaku %}
-        <img src="{{ pelaku.foto_pelaku.url }}" alt="Foto Pelaku" />
-    {% else %}
-        <p>Tidak ada foto pelaku.</p>
-    {% endif %}
+<body class="bg-white">
+
+<div class="container py-4">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <a href="{% url 'scan' %}" class="back-btn">&#8592;</a>
+    <h1 class="fw-bold text-center flex-grow-1 mb-0">Detail</h1>
+    <a href="{% url 'index' %}">
+      <img src="{% static 'icons/icon-about.svg' %}" alt="Info" class="icon-info">
+    </a>
+  </div>
+
+  <div class="row g-4">
+    <!-- Kolom Foto -->
+    <div class="col-md-4 text-center">
+      {% if pelaku.foto_pelaku %}
+        <img src="{% url 'pelaku_foto' pelaku.pk %}" alt="Foto Pelaku" class="foto-pelaku">
+      {% else %}
+        <div class="border p-5">Tidak ada foto</div>
+      {% endif %}
+    </div>
+
+    <!-- Kolom Info -->
+    <div class="col-md-8">
+      <div class="mb-3">
+        <label class="form-label">Nama</label>
+        <input type="text" class="form-control" readonly value="{{ pelaku.nama }}">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Umur</label>
+        <input type="text" class="form-control" readonly value="{{ pelaku.umur }}">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Supporter Tim</label>
+        <input type="text" class="form-control" readonly value="{{ pelaku.tim_dukung }}">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Ditetapkan Pada</label>
+        <input type="text" class="form-control" readonly value="{{ pelaku.tanggal_mulai|date:'j F Y' }}">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Berlaku Hingga</label>
+        <input type="text" class="form-control" readonly value="{{ pelaku.tanggal_berakhir|date:'j F Y' }}">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Durasi Hukuman</label>
+        <input type="text" class="form-control" readonly value="{{ pelaku.lama_hukuman }} hari">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Deskripsi Pelanggaran</label>
+        <textarea class="form-control" rows="3" readonly>{{ pelaku.kasus }}</textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

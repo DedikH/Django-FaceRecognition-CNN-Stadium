@@ -1,16 +1,47 @@
-<h1>Daftar Pelaku</h1>
-<a href="{% url 'pelaku_create' %}">Tambah Pelaku</a>
-<ul>
-  {% for p in data %}
-    <li>
-      <strong>{{ p.nama }}</strong> - {{ p.kasus }}
-      <br>
-      {% if p.foto_pelaku %}
-        <img src="{{ pelaku.foto_pelaku.url }}" width="120">
-      {% endif %}
-      <br>
-      <a href="{% url 'pelaku_update' p.pk %}">Edit</a> |
-      <a href="{% url 'pelaku_delete' p.pk %}">Hapus</a>
-    </li>
-  {% endfor %}
-</ul>
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Daftar Pelaku</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <a href="{% url 'index' %}" class="btn btn-outline-secondary mb-3">&larr; Back</a>
+    <h1 class="fw-bold">Daftar Pelaku</h1>
+    <a href="{% url 'pelaku_create' %}" class="btn btn-primary">+ Tambah Pelaku</a>
+  </div>
+
+  <div class="row g-4">
+    {% for p in data %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm h-100">
+          {% if p.foto_pelaku %}
+            <img src="{% url 'pelaku_foto' p.pk %}" class="card-img-top" alt="Foto Pelaku">
+          {% else %}
+            <div class="card-img-top text-center py-5 text-muted bg-light">
+              <em>Tidak ada foto pelaku</em>
+            </div>
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title text-capitalize">{{ p.nama }}</h5>
+            <p class="card-text">{{ p.kasus }}</p>
+            <p class="card-text">{{ p.tim_dukung }}</p>
+          </div>
+          
+          <div class="card-footer text-end">
+            <a href="{% url 'pelaku_update' p.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+            <a href="{% url 'pelaku_delete' p.pk %}" class="btn btn-sm btn-outline-danger ms-2">Hapus</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+</body>
+</html>

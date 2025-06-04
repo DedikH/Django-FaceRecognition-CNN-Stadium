@@ -9,20 +9,16 @@ import time
 
 # Load model CNN
 model = tf.keras.models.load_model(
-    'Z:/All Portfolio and Project/SEMOGA JADI/Skema Pak Muklis/paMuklisFace/face_recognition_mobilenetv2.h5'
+    'Z:\All Portfolio and Project\SEMOGA JADI\Skema Pak Muklis\paMuklisFace\model-cnn-facerecognition.h5'
 )
 
 # Daftar label
 labels = [
-    'Akshay Kumar', 'Alexandra Daddario', 'Alia Bhatt', 'Amitabh Bachchan',
-    'Andy Samberg', 'Anushka Sharma', 'Billie Eilish', 'Brad Pitt',
-    'Camila Cabello', 'Charlize Theron', 'Courtney Cox', 'Dwayne Johnson',
-    'Elizabeth Olsen', 'Ellen Degeneres', 'Henry Cavill', 'Hrithik Roshan',
-    'Hugh Jackman', 'Jessica Alba'
-]
+    'Billie Eilish', 'Brad Pitt', 'Camila Cabello', 'Dedik Hasanah Wijaya', 'Dwayne Johnson', 'Roger Federer', 'Tom Cruise'
+]  # daftar label
 
 # Folder input & output
-input_path = 'Z:/All Portfolio and Project/SEMOGA JADI/Skema Pak Muklis/paMuklisFace/testings.jpg'
+input_path = 'Z:\All Portfolio and Project\SEMOGA JADI\Skema Pak Muklis\manual_testing\detected_1748560982_c000fdd0081949319b6ac4bdf71bbab9.jpg'
 save_folder = 'saved_faces'
 os.makedirs(save_folder, exist_ok=True)
 
@@ -43,11 +39,14 @@ else:
     for i, face in enumerate(faces):
         x, y, w, h = face['box']
         x, y = max(0, x), max(0, y)
-        face_crop = rgb[y:y+h, x:x+w]
+        crop = rgb[y:y+h, x:x+w]
+        if crop.size == 0:
+            continue
 
         try:
             # Preprocessing untuk CNN
-            face_resized = cv2.resize(face_crop, (224, 224)) / 255.0
+            gray_crop = cv2.cvtColor(crop, cv2.COLOR_RGB2GRAY)
+            face_resized = cv2.resize(gray_crop, (50, 50)) / 255.0
             face_input = np.expand_dims(face_resized, axis=0)
 
             # Prediksi
@@ -61,7 +60,7 @@ else:
             # Simpan crop wajah
             filename = f"{predicted_label}_{int(time.time())}_{uuid.uuid4().hex}.jpg"
             save_path = os.path.join(save_folder, filename)
-            cv2.imwrite(save_path, cv2.cvtColor(face_crop, cv2.COLOR_RGB2BGR))
+            cv2.imwrite(save_path, cv2.cvtColor(gray_crop, cv2.COLOR_RGB2BGR))
             print("Disimpan ke:", save_path)
 
             # Tampilkan hasil

@@ -18,28 +18,28 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 
 # Load model CNN
-model = tf.keras.models.load_model('face_recognition_mobilenetv2.h5')
+model = tf.keras.models.load_model('model-cnn-facerecognition.h5')
 labels = [
-    'Akshay Kumar', 'Alexandra Daddario', 'Alia Bhatt', 'Amitabh Bachchan',
-    'Andy Samberg', 'Anushka Sharma', 'Billie Eilish', 'Brad Pitt',
-    'Camila Cabello', 'Charlize Theron', 'Courtney Cox', 'Dwayne Johnson',
-    'Elizabeth Olsen', 'Ellen Degeneres', 'Henry Cavill', 'Hrithik Roshan',
-    'Hugh Jackman', 'Jessica Alba'
+    'Billie Eilish', 'Brad Pitt', 'Camila Cabello', 'Dedik Hasanah Wijaya', 'Dwayne Johnson', 'Roger Federer', 'Tom Cruise'
 ]
 
 # Path video
-video_path = "Z:\\All Portfolio and Project\\SEMOGA JADI\\Skema Pak Muklis\\paMuklisFace\\videoplayback.mp4"
+video_path = "Z:\\All Portfolio and Project\\SEMOGA JADI\\Skema Pak Muklis\\paMuklisFace\\test_video.mp4"
 
 # Folder penyimpanan wajah
 SAVE_FOLDER = "saved_faces"
 os.makedirs(SAVE_FOLDER, exist_ok=True)
 
-# Inisialisasi detektor wajah
+# Inisialisasi detektor wajah dan kamera
 detector = MTCNN()
 
-# Inisialisasi views start
+# Inisialisasi views scan
 def index(request):
     return render(request, 'detector/index.html')
+
+# Inisialisasi views scan
+def scan(request):
+    return render(request, 'detector/scan.html')
 
 def detail_pelanggar(request, nama):
     data_pelaku = get_object_or_404(Pelaku, nama=nama)
@@ -47,7 +47,7 @@ def detail_pelanggar(request, nama):
     return render(request, 'detector/detail_pelanggar.html', {'pelaku': data_pelaku})
 # Inisialisasi views end
 
-# pemrosesan video start
+# simulasi pemrosesan video start
 def generate_video_stream():
     cap = cv2.VideoCapture(video_path)
     fps = cap.get(cv2.CAP_PROP_FPS)
@@ -62,8 +62,8 @@ def generate_video_stream():
         _, jpeg = cv2.imencode('.jpg', frame)
         yield (b'--frame\r\nContent-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n')
 
-        cv2.waitKey(delay)
-# pemrosesan video end
+        cv2.waitKey(delay)  # Delay untuk mengatur FPS
+# simulasi pemrosesan video end
 
 
 def video_simulation_feed(request):
@@ -71,7 +71,7 @@ def video_simulation_feed(request):
 
 @csrf_exempt
 def snapshot_api_simulation(request):
-    cap = cv2.VideoCapture(video_path)
+    cap = cv2.VideoCapture(video_path) 
     results = []
 
     success, frame = cap.read()

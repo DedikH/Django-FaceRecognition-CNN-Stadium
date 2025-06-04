@@ -1,111 +1,45 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Face Recognition</title>
-    <style>
-        .container { display: flex; gap: 20px; }
-        .left, .right { flex: 1; }
-        img { max-width: 100%; border-radius: 10px; }
-        .face-box { margin-bottom: 20px; }
-        .face-box img {
-            width: 150px; height: 150px; object-fit: cover;
-            border-radius: 8px; border: 2px solid #333;
-        }
-        .label { font-weight: bold; text-align: center; margin-top: 8px; }
-        .detail-button {
-            display: block;
-            margin: 10px auto 0;
-            padding: 6px 12px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            text-align: center;
-        }
-        .detail-button:hover {
-            background-color: #0056b3;
-        }
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .add-button {
-            padding: 6px 12px;
-            background-color: green;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            text-decoration: none;
-        }
-        .add-button:hover {
-            background-color: darkgreen;
-        }
-    </style>
+    <title>Safe League</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
 </head>
-<body>
-    <div class="top-bar">
-        <h2>Face Recognition Otomatis</h2>
-        <a href="{% url 'pelaku_create' %}" class="add-button">+ Tambah Pelaku</a>
-    </div>
+<body class="bg-light">
 
-    <div class="container">
-        <div class="left">
-            <h3>Live Kamera</h3>
-            <img src="/video_simulation_feed" alt="Live Camera Feed" id="camera-feed">
+<div class="container text-center mt-5">
+    <h1 class="mb-4 fw-bold">Safe League</h1>
+    
+    <div class="row g-4 justify-content-center">
+        <div class="col-6 col-md-3">
+            <a href="{% url 'pelaku_create' %}" class="btn-tile bg-info text-dark">
+                <img src="{% static 'icons/addlogo.svg' %}" alt="Add" class="icon">
+                <div class="fw-bold mt-2">Add</div>
+            </a>
         </div>
-        <div class="right">
-            <h3>Wajah yang Dikenali</h3>
-            <div id="faces-container"></div>
+        <div class="col-6 col-md-3">
+            <a href="{% url 'scan' %}" class="btn-tile bg-warning text-dark">
+                <img src="{% static 'icons/scanlogo.png' %}" alt="Scan" class="icon">
+                <div class="fw-bold mt-2">Scan</div>
+            </a>
+        </div>
+        <div class="col-6 col-md-3">
+            <a href="{% url 'pelaku_list' %}" class="btn-tile bg-danger text-white">
+                <img src="{% static 'icons/listlogo.png' %}" alt="List" class="icon">
+                <div class="fw-bold mt-2">List</div>
+            </a>
+        </div>
+        <div class="col-6 col-md-3">
+            <a href="#" class="btn-tile bg-light border">
+                <img src="{% static 'icons/aboutlogo.png' %}" alt="About" class="icon">
+                <div class="fw-bold mt-2">About</div>
+            </a>
         </div>
     </div>
+</div>
 
-    <script>
-        async function fetchSnapshot() {
-            try {
-                const response = await fetch('/snapshot_api_simulation');
-                const data = await response.json();
-                const container = document.getElementById('faces-container');
-                container.innerHTML = '';
-
-                if (data.results.length === 0) {
-                    container.innerHTML = '<p>Tidak ada wajah dikenali.</p>';
-                } else {
-                    data.results.forEach(res => {
-                        const faceDiv = document.createElement('div');
-                        faceDiv.classList.add('face-box');
-
-                        const faceImg = document.createElement('img');
-                        faceImg.src = `data:image/jpeg;base64,${res.image}`;
-
-                        const label = document.createElement('div');
-                        label.classList.add('label');
-                        label.innerHTML = `Nama: <strong>${res.name}</strong><br>Confidence: ${res.confidence}%`;
-
-                        const detailButton = document.createElement('button');
-                        detailButton.classList.add('detail-button');
-                        detailButton.textContent = 'Lihat Detail';
-                        detailButton.onclick = () => {
-                            const encodedName = encodeURIComponent(res.name);
-                            window.location.href = `/detail/${encodedName}`;
-                        };
-
-                        faceDiv.appendChild(faceImg);
-                        faceDiv.appendChild(label);
-                        faceDiv.appendChild(detailButton);
-                        container.appendChild(faceDiv);
-                    });
-                }
-            } catch (error) {
-                console.error("Snapshot Error:", error);
-            }
-        }
-
-        setInterval(fetchSnapshot, 3000); // tiap 3 detik
-    </script>
 </body>
 </html>
